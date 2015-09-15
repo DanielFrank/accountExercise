@@ -1,10 +1,12 @@
-import urllib,json
+import json
+from urllib import request
 from datetime import date
+import sys
 
 
 class Account:
     """Given a dict, define the element
-    Assumes dict has fields Account ID,Account Name,First Name,Created On
+    Assumes dict has keys Account ID,Account Name,First Name,Created On
     """
     def __init__(self, dict):
         self.account_name = dict["Account Name"]
@@ -14,6 +16,12 @@ class Account:
         """These next two we'll get from the API eventually so just set to None"""
         self.status = None
         self.status_date = None
+
+    """Return a dictionary with the values of self
+    Set keys to Account ID,Account Name,First Name,Created On
+    """
+    def makeDictionary(self, dict):
+        return {}
         
     """
     Converts a MySQL formatted date into a date object
@@ -26,15 +34,25 @@ class Account:
 
 
     """
-    Calls API and gets the status/status-date.
+    Calls API and sets the status/status-date for self.
     If problem with API-call or ID not recognized by API, sets to None
+    May eventually want to seperate API calls from Account
     """
     def getStatus(self):
         url = "https://interview.wpengine.io/v1/accounts/" + str(self.account_id)
-        """
         try:
-            result = urllib.request.urlopen(url)
+            result = request.urlopen(url)
             json_str=result.read().decode("utf-8")
+            json_obj=json.loads(json_str)
+            if ("detail" in json_obj and json_obj["detail"] == "Not found"):
+                self.status = None
+                self.status_date = None                
+                return
+            self.status = json_obj["status"]
+            self.status_date = self.convertToDate(json_obj["created_on"])
+        except:
+            self.status = None
+            self.status_date = None
+            return
+        
             
-        """
-        return

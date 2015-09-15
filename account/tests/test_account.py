@@ -21,10 +21,17 @@ class AccountTest(unittest.TestCase):
         self.assertEqual(account.first_name,self.test_dict["First Name"])
         self.assertEqual(account.created,date(2010,5,17))
 
+    """IRL, in these next three tests we may want to patch urllib.request.urlopen with a
+    function which returns a Mock or MagicMock Object which will return the desired byte
+    value we want to test for
+
+    This makes the test not-dependent on the API working (which may be good or bad)
+    and avoids swamping the API if we run these tests continuously
+    """
+
     def test_get_status_gets_correct_info(self):
         account = Account(self.test_dict)
         account.getStatus()
-        
         self.assertEqual(account.status,"good")
         self.assertEqual(account.status_date,date(2011,1,12))
 
