@@ -20,7 +20,7 @@ class AccountTest(unittest.TestCase):
         self.assertEqual(account.account_id,self.test_dict["Account ID"])
         self.assertEqual(account.first_name,self.test_dict["First Name"])
         self.assertEqual(account.created,date(2010,5,17))
-
+        
     """IRL, in these next three tests we may want to patch urllib.request.urlopen with a
     function which returns a Mock or MagicMock Object which will return the desired byte
     value we want to test for
@@ -50,3 +50,22 @@ class AccountTest(unittest.TestCase):
         account.getStatus()
         self.assertIsNone(account.status)
         self.assertIsNone(account.status_date)
+
+    def test_make_dictionary(self):
+        account = Account(self.test_dict)
+        result_dict = account.makeDictionary()
+        self.assertEqual(result_dict["Account Name"],self.test_dict["Account Name"])
+        self.assertEqual(result_dict["Account ID"],self.test_dict["Account ID"])
+        self.assertEqual(result_dict["First Name"],self.test_dict["First Name"])
+        self.assertEqual(result_dict["Created On"], self.test_dict["Created On"])
+        self.assertIsNone(result_dict["Status"])
+        self.assertIsNone(result_dict["Status Set On"])
+
+    def test_make_dictionary_with_status_set(self):
+        account = Account(self.test_dict)
+        account.status = "testing"
+        account.status_date = date(2015,10,12)
+        result_dict = account.makeDictionary()
+        self.assertEqual(result_dict["Status"], "testing")
+        self.assertEqual(result_dict["Status Set On"], '2015-10-12')
+       

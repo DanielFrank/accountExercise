@@ -18,11 +18,21 @@ class Account:
         self.status_date = None
 
     """Return a dictionary with the values of self
-    Set keys to Account ID,Account Name,First Name,Created On
+    Set keys to Account ID,Account Name,First Name,Created On,Status,Status Set On
     """
-    def makeDictionary(self, dict):
-        return {}
-        
+    def makeDictionary(self):
+        return {
+            "Account ID": self.account_id,
+            "Account Name": self.account_name,
+            "First Name": self.first_name,
+            "Created On": self.formatDate(self.created),
+            "Status": self.status,
+            "Status Set On": self.formatDate(self.status_date)
+        }
+
+
+    """Should probably create 'myDate' object which wraps around Date and does this stuff"""
+    
     """
     Converts a MySQL formatted date into a date object
     @param String in format of YYYY-MM-DD (assumes in correct format)
@@ -31,6 +41,16 @@ class Account:
     def convertToDate(self, date_str):
         date_split = date_str.split("-")
         return date(int(date_split[0]), int(date_split[1]), int(date_split[2]))
+
+    """
+    Converts a MySQL formatted date into a date object
+    @param Date object which might be None
+    @return datetime.date object
+    """
+    def formatDate(self, date_param):
+        if (date_param is None):
+            return None
+        return date_param.strftime("%Y-%m-%d")
 
 
     """
