@@ -21,9 +21,25 @@ class AccountTest(unittest.TestCase):
         self.assertEqual(account.first_name,self.test_dict["First Name"])
         self.assertEqual(account.created,date(2010,5,17))
 
-    def test_get_status_gets(self):
+    def test_get_status_gets_correct_info(self):
         account = Account(self.test_dict)
         account.getStatus()
         
         self.assertEqual(account.status,"good")
         self.assertEqual(account.status_date,date(2011,1,12))
+
+    def test_get_status_when_account_id_not_valid(self):
+        account = Account(self.test_dict)
+        account.account_id = 1234
+        account.getStatus()
+        self.assertIsNone(account.status)
+        self.assertIsNone(account.status_date)
+
+    def test_get_status_when_status_was_set_and_account_id_not_valid(self):
+        account = Account(self.test_dict)
+        account.account_id = 1234
+        account.status = "testing"
+        account.status_date = date(2015,10,12)
+        account.getStatus()
+        self.assertIsNone(account.status)
+        self.assertIsNone(account.status_date)
