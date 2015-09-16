@@ -1,7 +1,6 @@
 import json
 from urllib import request
 from datetime import date
-import sys
 
 
 class Account:
