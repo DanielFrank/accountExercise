@@ -1,8 +1,13 @@
 import csv
+import argparse
 from account import Account
 
-input_file = "/Users/danielfrank/Documents/accountExercise/testData/input.csv"         
-output_file = "/Users/danielfrank/Documents/accountExercise/testData/input-status.csv"
+parser = argparse.ArgumentParser(description='Process a CSV of account info, gather status info and \
+    output a second file with account and status info.')
+parser.add_argument("filepath")
+args = parser.parse_args()
+input_file = args.filepath
+output_file = input_file[0:len(input_file)-4] + "-status" + input_file[len(input_file)-4:len(input_file)]
 
 accounts = []
 
