@@ -1,0 +1,12 @@
+Given a CSV file with the following columns including a header row:
+    Account ID,Account Name,First Name,Created On
+And a Restful Status API:
+    https://interview.wpengine.io/v1/accounts/{account_id}
+that returns information in a JSON format of:
+    {"account_id": 12345, "status": "good", "created_on": "2011-01-12"}
+where the "Account ID" in the CSV lines up with the "account_id" in the API
+  and the "created_on" in API represents when the status was set
+
+For every line of data in the CSV, we want to pull the information from the API for the Account ID
+Merge it with the CSV data to output into a new CSV with columns of:
+    Account ID,First Name,Created On,Status,Status Set On
